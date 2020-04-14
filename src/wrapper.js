@@ -13,7 +13,7 @@ class Wrapper {
     if (!isUsingPlugin) {
       App = (app) => globalVarApp(this._create(app, this.injectAppMethods, this.extraAppMethods));
       Page = (page) => globalVarPage(this._create(page, this.injectPageMethods, this.extraPageMethods));
-      Component = (component) => globalVarPage(this._createComponent(component.methods, component, this.injectComponentMethods, this.extraComponentMethods));
+      Component = (component) => globalVarComponent(this._createComponent(component, this.injectComponentMethods, this.extraComponentMethods));
     }
   }
 
@@ -76,13 +76,13 @@ class Wrapper {
     return target;
   }
 
-  _createComponent(target, component, injectMethods, extraMethods) {
-    Object.keys(target)
-      .filter((prop) => typeof target[prop] === 'function')
+  _createComponent(target, injectMethods, extraMethods) {
+    Object.keys(target.methods)
+      .filter((prop) => typeof target.methods[prop] === 'function')
       .forEach((methodName) => {
-        this._wrapTargetMethod(target, component, methodName, injectMethods);
+        this._wrapTargetMethod(target.methods, target, methodName, injectMethods);
       });
-    this._addExtraMethod(target, extraMethods);
+    this._addExtraMethod(target.methods, extraMethods);
     return target;
   }
 
