@@ -81,7 +81,7 @@ class Wrapper {
     Object.keys(target)
       .filter((prop) => typeof target[prop] === 'function')
       .forEach((methodName) => {
-        this._wrapTargetMethod(target.methods, target, methodName, injectMethods);
+        this._wrapTargetMethod(target, component, methodName, injectMethods);
       });
     this._addExtraMethod(target, extraMethods);
     return component;
