@@ -76,14 +76,15 @@ class Wrapper {
     return target;
   }
 
-  _createComponent(target, injectMethods, extraMethods) {
-    Object.keys(target.methods)
-      .filter((prop) => typeof target.methods[prop] === 'function')
+  _createComponent(component, injectMethods, extraMethods) {
+    const target = component.methods;
+    Object.keys(target)
+      .filter((prop) => typeof target[prop] === 'function')
       .forEach((methodName) => {
         this._wrapTargetMethod(target.methods, target, methodName, injectMethods);
       });
-    this._addExtraMethod(target.methods, extraMethods);
-    return target;
+    this._addExtraMethod(target, extraMethods);
+    return component;
   }
 
   addPageMethodWrapper(fn) {
@@ -112,6 +113,10 @@ class Wrapper {
 
   createPage(page) {
     globalVarPage(this._create(page, this.injectPageMethods, this.extraPageMethods));
+  }
+
+  createComponent(component) {
+    globalVarPage(this._createComponent(component, this.injectPageMethods, this.extraPageMethods));
   }
 }
 
